@@ -13,5 +13,5 @@ def photoCheck(request):
     return True
 
 def photoQeury(request, shortcode = None):
-    results = image.objects.get(pk>shortcode).get(pk<shortcode+31)
+    results = image.objects.filter(pk>shortcode).filter(pk<shortcode+31)
     return JsonResponse(results, status=201)
