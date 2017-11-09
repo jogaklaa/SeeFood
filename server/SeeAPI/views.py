@@ -22,19 +22,34 @@ def homepageView(request):
 
 def photoCheck(request):
     fs = FileSystemStorage()
-
-    image.objects.create(photo = request.FILES['file'])
-    im = Image.open(request.FILES['file'])
-    # TODO: get actual file size
-    size = [200,200]
-    im_resized = im.resize(size, Image.ANTIALIAS)
-    filename = "photos/"+request.FILES['file'].name[:request.FILES['file'].name.index('.')-1]+'resized.png'
-    im_resized.save(filename)
-    #need to check validity here
-    #need to send to api here
-    #need to send to database
+    for newImage in request.FILES:
+        newImageObject = image.objects.create(photo = request.FILES[newImage])
+        im = Image.open(request.FILES[newImage])
+        # TODO: get actual file size
+        size = [200,200]
+        im_resized = im.resize(size, Image.ANTIALIAS)
+        filename = "photos/"+request.FILES[newImage].name[:request.FILES[newImage].name.index('.')-1]+'resized.png'
+        im_resized.save(filename)
+        #need to check validity here
+        #need to send to api here
+        #need to send to database
+        # newImageObject.positiveCertainty =
+        # newImageObject.negativeCertainty =
+        newImageObject.save()
     return JsonResponse({"work":"itworked"})
 
-def photoQeury(request, shortcode = None):
-    results = image.objects.filter(pk>shortcode).filter(pk<shortcode+31)
-    return JsonResponse(results, status=201)
+def photoQeury(request):
+    # to get the last 10 things
+    # last_ten = Messages.objects.filter(since=since).order_by('-id')[:10]
+    # last_ten_in_ascending_order = reversed(last_ten)
+
+
+    # use something like this to download files from server
+    # filename = object_name.file.name.split('/')[-1]
+    # response = HttpResponse(object_name.file, content_type='text/plain')
+    # response['Content-Disposition'] = 'attachment; filename=%s' % filename
+    #
+    # return response
+    print("got hre")
+    results = image.objects.all()
+    return JsonResponse({"asdfsd":"ASDAa"})
