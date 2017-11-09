@@ -20,5 +20,6 @@ from SeeAPI.views import *
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', homepageView),
-    url(r'^fetch/(?P<shortcode>[0-9]+)/$', photoQeury)
+    url(r'^fetch/(?P<shortcode>[0-9]+)/$', photoQeury),
+    url(r'^upload', photoCheck),
 ]
