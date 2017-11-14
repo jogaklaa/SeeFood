@@ -46,9 +46,11 @@ function submitPhoto(){
   <a href='/admin'><button>Login Here</button></a>
   <br />
   <div id="well">
+    <form method="post" enctype="multipart/form-data">
    <!-- {% csrf_token %} -->
 
    <input type="file" name="myfile" id="file">
-   <button onclick="submitPhoto()">Upload</button>
+   <button type="submit">Upload</button>
+ </form>
 </div>
  </body>

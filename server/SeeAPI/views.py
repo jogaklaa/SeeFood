@@ -13,11 +13,12 @@ from django.core.files.storage import FileSystemStorage
 def homepageView(request):
     if request.method == 'POST' and request.FILES['myfile']:
         print( request.FILES)
-        myfile = request.FILES['myfile']
-        fs = FileSystemStorage()
+        # myfile = request.FILES['myfile']
+        # fs = FileSystemStorage()
         # filename = fs.save(myfile.name, myfile)
         # uploaded_file_url = fs.url(filename)
-        return JsonResponse({'didItWork':"it worked!"})
+        # return JsonResponse({'didItWork':"it worked!"})
+        return photoCheck(request)
     return render(request, 'index.html')
 
 def photoCheck(request):
@@ -25,12 +26,12 @@ def photoCheck(request):
     values = {}
     for newImage in request.FILES:
         newImageObject = image.objects.create(photo = request.FILES[newImage])
-        im = Image.open(request.FILES[newImage])
-        # TODO: get actual file size
-        size = [200,200]
+        im = Image.open(request.FILES[newImage]).convert('RGB')
+        print(im.verify())
+        size = [227,227]
         im_resized = im.resize(size, Image.ANTIALIAS)
         filename = "photos/"+request.FILES[newImage].name[:request.FILES[newImage].name.index('.')-1]+'resized.png'
-        im_resized.save(filename)
+        # im_resized.save(filename)
         #need to check validity here
         #need to send to api here
         positive = 1.5
