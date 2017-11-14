@@ -22,6 +22,7 @@ def homepageView(request):
 
 def photoCheck(request):
     fs = FileSystemStorage()
+    values = {}
     for newImage in request.FILES:
         newImageObject = image.objects.create(photo = request.FILES[newImage])
         im = Image.open(request.FILES[newImage])
@@ -32,11 +33,15 @@ def photoCheck(request):
         im_resized.save(filename)
         #need to check validity here
         #need to send to api here
-        #need to send to database
-        # newImageObject.positiveCertainty =
-        # newImageObject.negativeCertainty =
+        positive = 1.5
+        negative = 1.1
+        newImageObject.positiveCertainty = positive
+        newImageObject.negativeCertainty = negative
         newImageObject.save()
-    return JsonResponse({"work":"itworked"})
+        print({"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty})
+        values[filename] = {"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty}
+    print(values)
+    return JsonResponse(values)
 
 def photoQeury(request):
     # to get the last 10 things

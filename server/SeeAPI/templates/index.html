@@ -1,8 +1,54 @@
-<h3>Hello World!!!!!1!!!!!!!!ON<h3>
-  <a href='/admin'><button>Login Here</button></a>
 
-  <form method="post" enctype="multipart/form-data">
+{% load static %}
+
+<style>
+  /*#image {
+    float: right;
+  }*/
+  body{
+    text-align: center;
+  }
+  img, a, input{
+    padding: 10px;
+  }
+  #well{
+    width: 400px;
+    height: 200px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin: auto;
+  }
+</style>
+<script language="JavaScript" type="text/javascript" src="{% static jquery.js %}jquery.js"></script>
+<script>
+function submitPhoto(){
+  var item = document.getElementById('file').files[0];
+  // todo check file extension
+  var data = {file:item}
+  console.log(data);
+  $.ajax({
+      url: '{% url 'upload' %}',
+      type: 'POST',
+      processData: false,
+      contentType: false,
+      data:data
+  }).done(function (data) {
+    console.log(data);
+  });
+}
+</script>
+
+<body>
+<div id="image">
+<img src="{% static "Capture.PNG" %}" width="225px" height="300px"alt="My image"/>
+</div>
+
+  <a href='/admin'><button>Login Here</button></a>
+  <br />
+  <div id="well">
    <!-- {% csrf_token %} -->
-   <input type="file" name="myfile">
-   <button type="submit">Upload</button>
- </form>
+
+   <input type="file" name="myfile" id="file">
+   <button onclick="submitPhoto()">Upload</button>
+</div>
+ </body>
