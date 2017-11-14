@@ -7,6 +7,7 @@ from .models import *
 from PIL import Image
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from seefood-core-ai import find_food.py as foodMethod
 
 
 
@@ -34,6 +35,7 @@ def photoCheck(request):
         # im_resized.save(filename)
         #need to check validity here
         #need to send to api here
+        foodMethod(im_resized)
         positive = 1.5
         negative = 1.1
         newImageObject.positiveCertainty = positive
