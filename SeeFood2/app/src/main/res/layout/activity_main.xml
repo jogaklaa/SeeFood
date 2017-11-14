@@ -7,12 +7,33 @@
     android:background="@drawable/waves"
     tools:context="com.ash.fish.seefood.MainActivity">
 
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_alignLeft="@+id/imageButton2"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/imageButton2"
+        android:layout_marginTop="42dp"
+        android:clickable="false"
+        app:srcCompat="@drawable/landscape" />
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:layout_above="@+id/Gallerybutton"
+        android:layout_centerHorizontal="true"
+        android:clickable="false"
+        app:srcCompat="@drawable/food" />
+
     <Button
         android:id="@+id/colorBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Is it food?" />
+        android:layout_below="@+id/imageButton"
+        android:layout_centerHorizontal="true"
+        android:text="Check this not-food photo" />
 
     <Button
         android:id="@+id/Gallerybutton"
@@ -20,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="122dp"
-        android:text="Gallery/Archive" />
+        android:layout_marginBottom="23dp"
+        android:text="Check this food photo" />
 
 </RelativeLayout>
