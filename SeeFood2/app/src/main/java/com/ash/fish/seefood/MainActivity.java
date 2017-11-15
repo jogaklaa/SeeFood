@@ -14,7 +14,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
         myButton  = (Button)findViewById(R.id.colorBtn);
         myButton.setOnClickListener(new View.OnClickListener() {
             @Override
