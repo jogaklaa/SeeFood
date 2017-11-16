@@ -25,7 +25,9 @@ SECRET_KEY = '^74^i)8q(@efsl6o$ba9qbxonqnkmcv6=2tez*$bqv+@p$fxzt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+
+
+ALLOWED_HOSTS =['34.234.229.114']
 
 
 # Application definition
@@ -44,13 +46,16 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    # 'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 ROOT_URLCONF = 'SeeFood.urls'
+
+MEDIA_URL = '/photos/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'photos')
 
 TEMPLATES = [
     {
