@@ -7,7 +7,22 @@ from .models import *
 from PIL import Image
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+import numpy as np
+import tensorflow as tf
 # from seefood-core-ai import find_food.py as foodMethod
+# from startup import setup
+def tempai():
+    return [[1.3, 1.223]]
+ # sess = tempai()
+
+sess = tf.Session()
+saver = tf.train.import_meta_graph('saved_model/model_epoch5.ckpt.meta')
+saver.restore(sess, tf.train.latest_checkpoint('saved_model/'))
+graph = tf.get_default_graph()
+x_input = graph.get_tensor_by_name('Input_xn/Placeholder:0')
+keep_prob = graph.get_tensor_by_name('Placeholder:0')
+class_scores = graph.get_tensor_by_name("fc8/fc8:0")
+print("AI has been loaded, party hard!")
 
 
 
@@ -27,19 +42,19 @@ def photoCheck(request):
     values = {}
     for newImage in request.FILES:
         newImageObject = image.objects.create(photo = request.FILES[newImage])
+
+
         im = Image.open(request.FILES[newImage]).convert('RGB')
-        print(im.verify())
-        size = [227,227]
-        im_resized = im.resize(size, Image.ANTIALIAS)
-        filename = "photos/"+request.FILES[newImage].name[:request.FILES[newImage].name.index('.')-1]+'resized.png'
+        im = im.resize((227, 227), Image.BILINEAR)
+        img_tensor = [np.asarray(im, dtype=np.float32)]
+        scores = sess.run(class_scores, {x_input: img_tensor, keep_prob: 1.}).tolist()
+        filename = request.FILES[newImage].name
         # im_resized.save(filename)
         #need to check validity here
         #need to send to api here
-        # foodMethod(im_resized)
-        positive = 1.5
-        negative = 1.1
-        newImageObject.positiveCertainty = positive
-        newImageObject.negativeCertainty = negative
+
+        newImageObject.positiveCertainty = scores[0][0]
+        newImageObject.negativeCertainty = scores[0][1]
         newImageObject.save()
         print({"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty})
         values[filename] = {"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty}

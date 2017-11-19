@@ -13,4 +13,4 @@ def startup():
     keep_prob = graph.get_tensor_by_name('Placeholder:0')
     class_scores = graph.get_tensor_by_name("fc8/fc8:0")
     print("AI has been loaded, party hard!")
-    return sess
+    return {'function':sess, 'class_scores': class_scores

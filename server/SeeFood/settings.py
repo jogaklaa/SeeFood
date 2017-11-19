@@ -27,7 +27,7 @@ DEBUG = True
 
 
 
-ALLOWED_HOSTS =['34.234.229.114']
+ALLOWED_HOSTS =['34.234.229.114', '127.0.0.1']
 
 
 # Application definition
