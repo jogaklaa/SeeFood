@@ -58,7 +58,6 @@ def photoCheck(request):
         newImageObject.save()
         print({"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty})
         values[filename] = {"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty}
-    print(values)
     return JsonResponse(values)
 
 def photoQeury(request):
@@ -76,3 +75,7 @@ def photoQeury(request):
     print("got hre")
     results = image.objects.all()
     return JsonResponse({"asdfsd":"ASDAa"})
+
+def photoview(request, pk = None):
+    image_data = open("/photos/"+image.objects.get(pk=pk).photo, "rb").read()
+    return HttpResponse(image_data, content_type="image/png")

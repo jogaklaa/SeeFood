@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^$', homepageView),
     url(r'^fetch', photoQeury, name="fetch"),
     url(r'^upload', photoCheck,name="upload"),
+    url(r'^photos/(?P<photo>\\(.+\\)*(.+)\.(.+))', photoview name="photo"),
 ]
