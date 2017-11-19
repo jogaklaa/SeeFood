@@ -48,7 +48,7 @@ function submitPhoto(){
   <div id="well">
     <form method="post" enctype="multipart/form-data">
    <!-- {% csrf_token %} -->
-
+   {% csrf_token %}
    <input type="file" name="myfile" id="file">
    <button type="submit">Upload</button>
  </form>

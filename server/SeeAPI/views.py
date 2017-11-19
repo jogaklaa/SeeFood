@@ -7,10 +7,9 @@ from .models import *
 from PIL import Image
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.views.decorators.csrf import csrf_exempt
 import numpy as np
 import tensorflow as tf
-# from seefood-core-ai import find_food.py as foodMethod
-# from startup import setup
 def tempai():
     return [[1.3, 1.223]]
  # sess = tempai()
@@ -28,7 +27,6 @@ print("AI has been loaded, party hard!")
 
 def homepageView(request):
     if request.method == 'POST' and request.FILES['myfile']:
-        print( request.FILES)
         # myfile = request.FILES['myfile']
         # fs = FileSystemStorage()
         # filename = fs.save(myfile.name, myfile)
@@ -37,11 +35,13 @@ def homepageView(request):
         return photoCheck(request)
     return render(request, 'index.html')
 
+@csrf_exempt
 def photoCheck(request):
     fs = FileSystemStorage()
     values = {}
     for newImage in request.FILES:
         newImageObject = image.objects.create(photo = request.FILES[newImage])
+        print(newImageObject.pk)
 
 
         im = Image.open(request.FILES[newImage]).convert('RGB')
@@ -60,6 +60,7 @@ def photoCheck(request):
         values[filename] = {"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty}
     return JsonResponse(values)
 
+@csrf_exempt
 def photoQeury(request):
     # to get the last 10 things
     # last_ten = Messages.objects.filter(since=since).order_by('-id')[:10]
@@ -77,5 +78,6 @@ def photoQeury(request):
     return JsonResponse({"asdfsd":"ASDAa"})
 
 def photoview(request, pk = None):
-    image_data = open("/photos/"+image.objects.get(pk=pk).photo, "rb").read()
-    return HttpResponse(image_data, content_type="image/png")
+
+    # image_data = open(image.objects.get(pk=pk).photo, "rb").read()
+    return HttpResponse(image.objects.get(pk=pk).photo, content_type="image/png")
