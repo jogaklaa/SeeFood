@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, render_to_response, get_object_or_404, redirect
-from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse, HttpResponseNotFound
 from .models import *
 from PIL import Image
 from django.conf import settings
@@ -10,9 +10,7 @@ from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 import numpy as np
 import tensorflow as tf
-def tempai():
-    return [[1.3, 1.223]]
- # sess = tempai()
+
 
 sess = tf.Session()
 saver = tf.train.import_meta_graph('saved_model/model_epoch5.ckpt.meta')
@@ -27,11 +25,10 @@ print("AI has been loaded, party hard!")
 
 def homepageView(request):
     if request.method == 'POST' and request.FILES['myfile']:
-        # myfile = request.FILES['myfile']
-        # fs = FileSystemStorage()
-        # filename = fs.save(myfile.name, myfile)
-        # uploaded_file_url = fs.url(filename)
-        # return JsonResponse({'didItWork':"it worked!"})
+        # for newImage in request.FILES:
+            # newImageObject = image.objects.create(photo = request.FILES[newImage], positiveCertainty = 1.5, negativeCertainty = .3)
+            # newImageObject.save()
+        # return JsonResponse({"it worked!"})
         return photoCheck(request)
     return render(request, 'index.html')
 
@@ -41,14 +38,12 @@ def photoCheck(request):
     values = {}
     for newImage in request.FILES:
         newImageObject = image.objects.create(photo = request.FILES[newImage])
-        print(newImageObject.pk)
-
-
         im = Image.open(request.FILES[newImage]).convert('RGB')
         im = im.resize((227, 227), Image.BILINEAR)
         img_tensor = [np.asarray(im, dtype=np.float32)]
         scores = sess.run(class_scores, {x_input: img_tensor, keep_prob: 1.}).tolist()
         filename = request.FILES[newImage].name
+
         # im_resized.save(filename)
         #need to check validity here
         #need to send to api here
@@ -56,26 +51,19 @@ def photoCheck(request):
         newImageObject.positiveCertainty = scores[0][0]
         newImageObject.negativeCertainty = scores[0][1]
         newImageObject.save()
-        print({"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty})
+        print({"photo":newImageObject.photo, "positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty})
         values[filename] = {"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty}
     return JsonResponse(values)
 
 @csrf_exempt
-def photoQeury(request):
-    # to get the last 10 things
-    # last_ten = Messages.objects.filter(since=since).order_by('-id')[:10]
-    # last_ten_in_ascending_order = reversed(last_ten)
-
-
-    # use something like this to download files from server
-    # filename = object_name.file.name.split('/')[-1]
-    # response = HttpResponse(object_name.file, content_type='text/plain')
-    # response['Content-Disposition'] = 'attachment; filename=%s' % filename
-    #
-    # return response
-    print("got hre")
-    results = image.objects.all()
-    return JsonResponse({"asdfsd":"ASDAa"})
+def photoQeury(request, pk = None):
+    if int(pk) >= len(image.objects.all()):
+        return HttpResponseNotFound('<img src="https://http.cat/404">')
+    photo = image.objects.all().order_by('-pk')[int(pk)]
+    response = HttpResponse(photo.photo, content_type="image/png")
+    response['positive'] =photo.positiveCertainty
+    response['negative'] =photo.negativeCertainty
+    return response
 
 def photoview(request, pk = None):
 

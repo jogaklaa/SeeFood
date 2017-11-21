@@ -24,7 +24,7 @@ from django.views.static import serve
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', homepageView),
-    url(r'^fetch', photoQeury, name="fetch"),
+    url(r'^fetch/(?P<pk>[0-9]+)/$', photoQeury, name="fetch"),
     url(r'^upload', photoCheck,name="upload"),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
 ]
