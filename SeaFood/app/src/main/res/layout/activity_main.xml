@@ -23,6 +23,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
+        <Button
+            android:id="@+id/cameraUploadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:layout_gravity="center"
+            android:text="Take Image" />
+
+        <ImageView
+            android:id="@+id/captureView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
-</RelativeLayout>
+    </RelativeLayout>
