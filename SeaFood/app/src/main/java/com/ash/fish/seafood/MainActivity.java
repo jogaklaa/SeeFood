@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView;
 
     //edittext for getting the tags input
-    EditText editTextTags;
+    //EditText editTextTags;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         //initializing views
         imageView = (ImageView) findViewById(R.id.imageView);
-        editTextTags = (EditText) findViewById(R.id.editTextTags);
+        //editTextTags = (EditText) findViewById(R.id.editTextTags);
 
         /*
         //checking the permission
@@ -74,11 +74,13 @@ public class MainActivity extends AppCompatActivity {
 
                 //if the tags edittext is empty
                 //we will throw input error
+                /*
                 if (editTextTags.getText().toString().trim().isEmpty()) {
                     editTextTags.setError("Enter tags first");
                     editTextTags.requestFocus();
                     return;
                 }
+                */
 
                 //if everything is ok we will open image chooser
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -129,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
     private void uploadBitmap(final Bitmap bitmap) {
 
         //getting the tag from the edittext
-        final String tags = editTextTags.getText().toString().trim();
+        //final String tags = editTextTags.getText().toString().trim();
 
         //our custom volley request
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, EndPoints.UPLOAD_URL,
@@ -160,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                params.put("tags", tags);
+                //params.put("tags", tags);
                 return params;
             }
 
