@@ -9,27 +9,28 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 import numpy as np
-import tensorflow as tf
+import base64
+# import tensorflow as tf
 
-
-sess = tf.Session()
-saver = tf.train.import_meta_graph('saved_model/model_epoch5.ckpt.meta')
-saver.restore(sess, tf.train.latest_checkpoint('saved_model/'))
-graph = tf.get_default_graph()
-x_input = graph.get_tensor_by_name('Input_xn/Placeholder:0')
-keep_prob = graph.get_tensor_by_name('Placeholder:0')
-class_scores = graph.get_tensor_by_name("fc8/fc8:0")
-print("AI has been loaded, party hard!")
+#
+# sess = tf.Session()
+# saver = tf.train.import_meta_graph('saved_model/model_epoch5.ckpt.meta')
+# saver.restore(sess, tf.train.latest_checkpoint('saved_model/'))
+# graph = tf.get_default_graph()
+# x_input = graph.get_tensor_by_name('Input_xn/Placeholder:0')
+# keep_prob = graph.get_tensor_by_name('Placeholder:0')
+# class_scores = graph.get_tensor_by_name("fc8/fc8:0")
+# print("AI has been loaded, party hard!")
 
 
 
 def homepageView(request):
     if request.method == 'POST' and request.FILES['myfile']:
-        # for newImage in request.FILES:
-            # newImageObject = image.objects.create(photo = request.FILES[newImage], positiveCertainty = 1.5, negativeCertainty = .3)
-            # newImageObject.save()
-        # return JsonResponse({"it worked!"})
-        return photoCheck(request)
+        for newImage in request.FILES:
+            newImageObject = image.objects.create(photo = request.FILES[newImage], positiveCertainty = 1.5, negativeCertainty = .3)
+            newImageObject.save()
+        return JsonResponse({"item":"it worked!"})
+        # return photoCheck(request)
     return render(request, 'index.html')
 
 @csrf_exempt
@@ -57,13 +58,17 @@ def photoCheck(request):
 
 @csrf_exempt
 def photoQeury(request, pk = None):
-    if int(pk) >= len(image.objects.all()):
-        return HttpResponseNotFound('<img src="https://http.cat/404">')
-    photo = image.objects.all().order_by('-pk')[int(pk)]
-    response = HttpResponse(photo.photo, content_type="image/png")
-    response['positive'] =photo.positiveCertainty
-    response['negative'] =photo.negativeCertainty
-    return response
+    data = {}
+    for i in range(0,int(pk)):
+        if i >= len(image.objects.all()):
+            break
+        photo = image.objects.all().order_by('-pk')[i]
+        # dictionary =  {"photo":base64.b64encode(open(photo.photo, "rb").read())}
+        dictionary ={"photo":"http://127.0.0.1:8000/media/"+photo.photo.name}
+        dictionary['positive'] =photo.positiveCertainty
+        dictionary['negative'] =photo.negativeCertainty
+        data[i] = dictionary
+    return JsonResponse(data)
 
 def photoview(request, pk = None):
 
