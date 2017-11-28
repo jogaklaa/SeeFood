@@ -34,6 +34,7 @@ import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity {
+    static final int REQUEST_IMAGE_CAPTURE =200;
 
     //ImageView to display image selected
     ImageView imageView;
@@ -88,7 +89,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
- 
+        findViewById(R.id.cameraUploadImage).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //if everything is okay will open image capture
+                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if(takePhotoIntent.resolveActivity(getPackageManager())!=null){
+                    startActivityForResult(takePhotoIntent, REQUEST_IMAGE_CAPTURE);
+                }
+
+
+            }
+        });
+
+
     }
 
     @Override
@@ -110,6 +125,12 @@ public class MainActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
+            Bundle extras = data.getExtras();
+            Bitmap bitmap = (Bitmap) extras.get("data");
+            imageView.setImageBitmap(bitmap);
+            uploadBitmap(bitmap);
         }
     }
 
