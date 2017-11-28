@@ -5,3 +5,6 @@ from django.contrib import admin
 from .models import *
 
 admin.site.register(image)
+class FileAdmin(admin.ModelAdmin):
+    list_display = ['fileLink']
+    readonly_fields = ['fileLink']
