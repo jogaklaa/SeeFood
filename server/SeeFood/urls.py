@@ -14,9 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.conf.urls import patterns, include, url
+from django.conf.urls import  url
+from SeeAPI.views import *
+import settings
+from django.views.static import serve
+
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/', include('apps.SeeAPI.urls', namespace="SeeAPI")),
+    url(r'^$', homepageView),
+    url(r'^fetch/(?P<pk>[0-9]+)/$', photoQeury, name="fetch"),
+    url(r'^upload', photoCheck,name="upload"),
+    url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
 ]

@@ -6,7 +6,7 @@ package com.ash.fish.seafood;
 public class EndPoints {
 
     // TODO - modify this ip with yours
-    private static final String ROOT_URL = "http://34.234.229.114:8000/upload";
-    public static final String UPLOAD_URL = ROOT_URL + "uploadpic";
-    public static final String GET_PICS_URL = ROOT_URL + "getpics";
+    private static final String ROOT_URL = "http://34.234.229.114:8000/";
+    public static final String UPLOAD_URL = ROOT_URL + "upload";
+    public static final String GET_PICS_URL = ROOT_URL + "fetch";
 }
