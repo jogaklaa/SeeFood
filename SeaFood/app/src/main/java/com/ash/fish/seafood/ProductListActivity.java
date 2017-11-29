@@ -74,12 +74,9 @@ public class ProductListActivity extends AppCompatActivity {
 
                                 //adding the product to product list
                                 productList.add(new Product(
-                                        product.getInt("id"),
-                                        product.getString("title"),
-                                        product.getString("shortdesc"),
-                                        product.getDouble("rating"),
-                                        product.getDouble("price"),
-                                        product.getString("image")
+                                        product.getString("imageUrl"),
+                                        product.getDouble("negative"),
+                                        product.getDouble("positive")
                                 ));
                             }
 

@@ -3,43 +3,29 @@ package com.ash.fish.seafood;
 
 
 public class Product {
-    private int id;
-    private String title;
-    private String shortdesc;
-    private double rating;
-    private double price;
-    private String image;
+    private String imageUrl;
+    private double negative;
+    private double positive;
 
-    public Product(int id, String title, String shortdesc, double rating, double price, String image) {
-        this.id = id;
-        this.title = title;
-        this.shortdesc = shortdesc;
-        this.rating = rating;
-        this.price = price;
-        this.image = image;
+
+
+    public Product(String imageUrl, double negative, double positive) {
+        this.imageUrl = imageUrl;
+        this.negative = negative;
+        this.positive = positive;
+
     }
 
-    public int getId() {
-        return id;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public String getTitle() {
-        return title;
+    public double getNegative() {
+        return negative;
     }
 
-    public String getShortdesc() {
-        return shortdesc;
+    public double getPositive() {
+        return positive;
     }
 
-    public double getRating() {
-        return rating;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public String getImage() {
-        return image;
-    }
 }

@@ -3,31 +3,36 @@ package com.ash.fish.seafood;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Bundle;
+
 import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
     //this is the JSON Data URL
     //make sure you are using the correct ip else it will not work
-    private static final String URL_PRODUCTS = "http://34.234.229.114:8000/fetch/30.php";
+    private static final String URL_PRODUCTS = "http://34.234.229.114:8000/fetch/";
 
     //a list to store all the products
     List<Product> productList;
@@ -52,8 +57,8 @@ public class MainActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
 
-        //initializing views
-        imageView = (ImageView) findViewById(R.id.imageView);
+//        //initializing views
+//        imageView = (ImageView) findViewById(R.id.imageView);
 
         //getting the recyclerview from xml
         recyclerView = findViewById(R.id.recyclerView);
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //TAKE A PICTURE FROM THE CAMERA BUTTON
         findViewById(R.id.cameraUploadImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
         //adding the request to volley
         Volley.newRequestQueue(this).add(volleyMultipartRequest);
     }
+
     private void loadProducts() {
 
         /*
@@ -232,12 +239,9 @@ public class MainActivity extends AppCompatActivity {
 
                                 //adding the product to product list
                                 productList.add(new Product(
-                                        product.getInt("id"),
-                                        product.getString("title"),
-                                        product.getString("shortdesc"),
-                                        product.getDouble("rating"),
-                                        product.getDouble("price"),
-                                        product.getString("image")
+                                        product.getString("imageUrl"),
+                                        product.getDouble("negative"),
+                                        product.getDouble("positive")
                                 ));
                             }
 

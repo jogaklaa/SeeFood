@@ -36,13 +36,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
         //loading the image
         Glide.with(mCtx)
-                .load(product.getImage())
+                .load(product.getImageUrl())
                 .into(holder.imageView);
 
-        holder.textViewTitle.setText(product.getTitle());
-        holder.textViewShortDesc.setText(product.getShortdesc());
-        holder.textViewRating.setText(String.valueOf(product.getRating()));
-        holder.textViewPrice.setText(String.valueOf(product.getPrice()));
+        holder.textViewNegative.setText(String.valueOf(product.getNegative()));
+        holder.textViewPositive.setText(String.valueOf(product.getPositive()));
     }
 
     @Override
@@ -52,16 +50,14 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textViewTitle, textViewShortDesc, textViewRating, textViewPrice;
+//        TextView textViewTitle, textViewShortDesc, textViewRating, textViewPrice;
+        TextView textViewNegative, textViewPositive;
         ImageView imageView;
 
         public ProductViewHolder(View itemView) {
             super(itemView);
-
-            textViewTitle = itemView.findViewById(R.id.textViewTitle);
-            textViewShortDesc = itemView.findViewById(R.id.textViewShortDesc);
-            textViewRating = itemView.findViewById(R.id.textViewRating);
-            textViewPrice = itemView.findViewById(R.id.textViewPrice);
+            textViewNegative = itemView.findViewById(R.id.textViewNegative);
+            textViewPositive = itemView.findViewById(R.id.textViewPositive);
             imageView = itemView.findViewById(R.id.imageView);
         }
     }
