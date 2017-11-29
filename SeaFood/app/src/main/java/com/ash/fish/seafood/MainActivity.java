@@ -62,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.buttonUploadImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, 100);
             }
@@ -77,12 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 if(takePhotoIntent.resolveActivity(getPackageManager())!=null){
                     startActivityForResult(takePhotoIntent, REQUEST_IMAGE_CAPTURE);
                 }
-
-
             }
         });
-
-
     }
 
     @Override
@@ -130,9 +125,6 @@ public class MainActivity extends AppCompatActivity {
 
     private void uploadBitmap(final Bitmap bitmap) {
 
-        //getting the tag from the edittext
-        //final String tags = editTextTags.getText().toString().trim();
-
         //our custom volley request
         VolleyMultipartRequest volleyMultipartRequest = new VolleyMultipartRequest(Request.Method.POST, EndPoints.UPLOAD_URL,
                 new Response.Listener<NetworkResponse>() {
@@ -153,16 +145,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }) {
 
-            /*
-            * If you want to add more parameters with the image
-            * you can do it here
-            * here we have only one parameter with the image
-            * which is tags
-            * */
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                //params.put("tags", tags);
                 return params;
             }
 

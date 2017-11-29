@@ -23,23 +23,27 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MultiActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MULTI_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".TutorialActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.TUTORIAL_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
 
         <activity android:name=".ResponseActivity">
             <intent-filter>
-                <action android:name="android.intent.action.RESONSE_ACTIVITY" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-
-
-        <activity android:name=".TutorialActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.TUTORIAL_ACTIVITY" />
-
+                <action android:name="android.intent.action.RESPONSE_ACTIVITY" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>

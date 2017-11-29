@@ -8,8 +8,11 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,13 +31,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ResponseActivity extends AppCompatActivity {
-    final String url = "http://34.234.229.114:8000/fetch/1";
+    final String url = "http://34.234.229.114:8000/fetch/30";
     String certainty;
     String imageurl;
     ImageView imageView;
     Bitmap bitmap;
     String JSONresponse1;
     TextView certain;
+    Button previous;
+    Button next;
+    int count = 0;
+    JSONObject dictionary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +51,7 @@ public class ResponseActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        RequestQueue queue = Volley.newRequestQueue(this);
+        final RequestQueue queue = Volley.newRequestQueue(this);
         imageView = findViewById(R.id.result);
         certain = findViewById(R.id.certainty);
 
@@ -86,9 +93,98 @@ public class ResponseActivity extends AppCompatActivity {
         bitmap = getBitmap(imageurl);
         imageView.setImageBitmap(bitmap);
 
-//        while(true){
-//
-//        }
+        next = findViewById(R.id.next);
+        previous = findViewById(R.id.previous);
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count+=1;
+                Log.v("Money", "hoes");
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONObject>()
+                        {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                //Log.d("Response", response.toString());
+                                JSONresponse1 = response.toString();
+                                Log.d("image", JSONresponse1);
+                                try {
+                                    String sindex = Integer.toString(count);
+                                    JSONObject index = response.getJSONObject(sindex);
+                                    imageurl = index.getString("photo");
+                                    certainty = index.getString("certainty");
+                                    Log.d("image", imageurl);
+                                    bitmap = getBitmap(imageurl);
+                                    imageView.setImageBitmap(bitmap);
+                                    certain.setText(certainty);
+                                    //uploaded = LoadImageFromWebOperations(imageurl);
+                                    //SetImage(imageurl, imageView);
+                                    //imageView.setImageDrawable(uploaded);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener()
+                        {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", "no");
+                            }
+                        }
+                );
+
+                queue.add(getRequest);
+            }
+        });
+
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(count >= 1) {
+                    count -= 1;
+                    Log.v("Money", "and hoes");
+                    JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                            new Response.Listener<JSONObject>()
+                            {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    //Log.d("Response", response.toString());
+                                    JSONresponse1 = response.toString();
+                                    Log.d("image", JSONresponse1);
+                                    try {
+                                        String sindex = Integer.toString(count);
+                                        JSONObject index = response.getJSONObject(sindex);
+                                        imageurl = index.getString("photo");
+                                        certainty = index.getString("certainty");
+                                        Log.d("image", imageurl);
+                                        bitmap = getBitmap(imageurl);
+                                        imageView.setImageBitmap(bitmap);
+                                        certain.setText(certainty);
+                                        //uploaded = LoadImageFromWebOperations(imageurl);
+                                        //SetImage(imageurl, imageView);
+                                        //imageView.setImageDrawable(uploaded);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener()
+                            {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("Error.Response", "no");
+                                }
+                            }
+                    );
+
+                    queue.add(getRequest);
+                } else {
+                    Toast.makeText(getApplicationContext(), "This is the most recent image",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     public Bitmap getBitmap(String url) {
