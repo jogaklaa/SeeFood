@@ -3,11 +3,13 @@ package com.ash.fish.seafood;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,15 +23,18 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 public class ResponseActivity extends AppCompatActivity {
     final String url = "http://34.234.229.114:8000/fetch/1";
-    double negative;
-    double certainty;
+    String certainty;
     String imageurl;
-    Drawable uploaded;
+    ImageView imageView;
+    Bitmap bitmap;
+    String JSONresponse1;
+    TextView certain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,20 +45,27 @@ public class ResponseActivity extends AppCompatActivity {
         StrictMode.setThreadPolicy(policy);
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        final ImageView imageView = findViewById(R.id.imageView);
+        imageView = findViewById(R.id.result);
+        certain = findViewById(R.id.certainty);
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
             new Response.Listener<JSONObject>()
             {
                 @Override
                 public void onResponse(JSONObject response) {
-                    Log.d("Response", response.toString());
+                    //Log.d("Response", response.toString());
+                    JSONresponse1 = response.toString();
+                    Log.d("image", JSONresponse1);
                     try {
-                        JSONObject zero = response.getJSONObject("0");
-                        imageurl = zero.getString("photo");
+                        JSONObject index = response.getJSONObject("0");
+                        imageurl = index.getString("photo");
+                        certainty = index.getString("certainty");
                         Log.d("image", imageurl);
-                        uploaded = LoadImageFromWebOperations(imageurl);
-                        SetImage(imageurl, imageView);
+                        bitmap = getBitmap(imageurl);
+                        imageView.setImageBitmap(bitmap);
+                        certain.setText(certainty);
+                        //uploaded = LoadImageFromWebOperations(imageurl);
+                        //SetImage(imageurl, imageView);
                         //imageView.setImageDrawable(uploaded);
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -69,16 +81,25 @@ public class ResponseActivity extends AppCompatActivity {
             }
         );
 
-
+        //Log.v("image", JSONresponse1);
         queue.add(getRequest);
+        bitmap = getBitmap(imageurl);
+        imageView.setImageBitmap(bitmap);
 
+        while(true){
+
+        }
     }
 
-    public static Drawable LoadImageFromWebOperations(String url) {
+    public Bitmap getBitmap(String url) {
         try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
+            URL uurrll = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) uurrll.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap bitmap1 = BitmapFactory.decodeStream(input);
+            return bitmap1;
         } catch (Exception e) {
             return null;
         }
@@ -95,4 +116,6 @@ public class ResponseActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
 }
