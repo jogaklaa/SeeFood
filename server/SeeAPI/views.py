@@ -52,7 +52,7 @@ def photoCheck(request):
     return JsonResponse(values)
 
 @csrf_exempt
-def photoQeury(request, pk = 10):
+def photoQeury(request, pk = 30):
     data = {}
     for i in range(0,int(pk)):
         if i >= len(image.objects.all()):
