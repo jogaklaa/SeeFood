@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.buttonGallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, ProductListActivity.class);
+                Intent i = new Intent(MainActivity.this, ResponseActivity.class);
                 startActivity(i);
             }
         });
