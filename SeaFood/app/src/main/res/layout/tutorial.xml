@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView android:id="@+id/ScrollView01"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".TutorialActivity">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Welcome to SeeFood!"
+            android:textSize="32sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/text1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="Here at SeeFood™, we want everybody to understand our app to the fullest!"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/text2"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="On the homepage, you can upload an image from your phone, take a new picture, or view the public SeeFood Foodiness Gallery Gallore!"
+            />
+
+        <TextView
+            android:id="@+id/text3"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Upload an image from your phone:"
+            />
+
+        <TextView
+            android:id="@+id/text4"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="When you tap the 'Upload image' button, the app automatically directs you to your phone's gallery. From here, simply tap the photo you want to upload! SeeFood will do the rest."
+            />
+
+        <TextView
+            android:id="@+id/text5"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Take a new picture:"
+            />
+
+        <TextView
+            android:id="@+id/text6"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="When you tap the 'Take image' button, the app automatically opens your camera application on your phone. Simply take a photo, and it'll be uploaded for analysis."
+            />
+
+        <TextView
+            android:id="@+id/text7"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="Viewing the gallery:"
+            />
+
+        <TextView
+            android:id="@+id/text8"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="When you tap the 'View gallery' button, you'll be treated to 30 images that SeeFood has analyzed previously. Remember, when you upload an image, anybody can see it through the gallery. Be careful!"
+            />
+
+        <TextView
+            android:id="@+id/text9"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Viewing the gallery also allows you to see the foodiness level of images in the gallery."
+            />
+
+        <TextView
+            android:id="@+id/text11"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="What happens when I upload my image?"
+            />
+
+        <TextView
+            android:id="@+id/text12"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="When you upload an image, the SeeFood Mastermind will analyze the image for you! Then, you'll be told the likelihood that the image contains food or the likelihood that it does not contain food. A higher percentage means that the SeeFood Mastermind is more certain of their decision."
+            />
+
+        <TextView
+            android:id="@+id/text13"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:text="What do I do once the SeeFood Mastermind has replied?"
+            />
+
+        <TextView
+            android:id="@+id/text14"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="That's up to you! You now have the SeeFood Mastermind's opinion on if there is food in the image... It's powerful stuff, we know. However, there is one thing that us here at SeeFood™ are legally obligated to tell you:"
+            />
+
+        <TextView
+            android:id="@+id/text15"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="36sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SEEFOOD™ CLAIMS ZERO RESPONSIBILITY FOR THE ACTIONS OF ITS USERS. SEEFOOD™ AND ITS SUBSIDIARIES ARE NOT RESPONSIBLE FOR THE POSSIBLE CONSUMPTION OF IMAGE SUBJECTS DUE TO THE SEEFOOD MASTERMIND'S OPINION. UNDER NO CIRCUMSTANCE SHOULD SEEFOOD™ BE INFORMED, ENLIGHTENED, EXPLAINED TO, DESCRIBED OF, TAUGHT, OR ANTI-KNOWLEDGE-IFIED OF POTENTIAL NEGATIVE LIFE-THREATENING EXPERIENCES. WE THANK YOU FOR USING OUR APP. Please... SeeFood responsibly."
+            />
+    </LinearLayout>
+</ScrollView>

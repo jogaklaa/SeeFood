@@ -1,19 +1,12 @@
 package com.ash.fish.seafood;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -31,6 +24,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import com.android.volley.toolbox.StringRequest;
+import org.json.JSONArray;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE =200;
@@ -38,51 +37,58 @@ public class MainActivity extends AppCompatActivity {
     //ImageView to display image selected
     ImageView imageView;
 
-    //edittext for getting the tags input
-    //EditText editTextTags;
+    //this is the JSON Data URL
+    //make sure you are using the correct ip else it will not work
+    private static final String URL_PRODUCTS = "http://34.234.229.114:8000/fetch";
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    //a list to store all the products
+    List<Product> productList;
 
+    //the recyclerview
+    RecyclerView recyclerView;
+
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
 
         //initializing views
         imageView = (ImageView) findViewById(R.id.imageView);
-        //editTextTags = (EditText) findViewById(R.id.editTextTags);
 
-        /*
-        //checking the permission
-        //if the permission is not given we will open setting to add permission
-        //else app will not open
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this,
-                Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.parse("package:" + getPackageName()));
-            finish();
-            startActivity(intent);
-            return;
-        }
+        //getting the recyclerview from xml
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        */
+        //initializing the productlist
+        productList = new ArrayList<>();
+
+        //this method will fetch and parse json
+        //to display it in recyclerview
+        loadProducts();
+
+
+        findViewById(R.id.buttonGallery).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, ProductListActivity.class);
+                startActivity(i);
+            }
+        });
+
+        findViewById(R.id.buttonTutorial).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, TutorialActivity.class);
+                startActivity(i);
+            }
+        });
 
         //adding click listener to button
         findViewById(R.id.buttonUploadImage).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                //if the tags edittext is empty
-                //we will throw input error
-                /*
-                if (editTextTags.getText().toString().trim().isEmpty()) {
-                    editTextTags.setError("Enter tags first");
-                    editTextTags.requestFocus();
-                    return;
-                }
-                */
-
-                //if everything is ok we will open image chooser
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(i, 100);
             }
@@ -200,5 +206,54 @@ public class MainActivity extends AppCompatActivity {
 
         //adding the request to volley
         Volley.newRequestQueue(this).add(volleyMultipartRequest);
+    }
+    private void loadProducts() {
+
+        /*
+        * Creating a String Request
+        * The request type is GET defined by first parameter
+        * The URL is defined in the second parameter
+        * Then we have a Response Listener and a Error Listener
+        * In response listener we will get the JSON response as a String
+        * */
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_PRODUCTS,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            //converting the string to json array object
+                            JSONArray array = new JSONArray(response);
+
+                            //traversing through all the object
+                            for (int i = 0; i < array.length(); i++) {
+
+                                //getting product object from json array
+                                JSONObject product = array.getJSONObject(i);
+
+                                //adding the product to product list
+                                productList.add(new Product(
+                                        product.getString("imageUrl"),
+                                        product.getDouble("negative"),
+                                        product.getDouble("positive")
+                                ));
+                            }
+
+                            //creating adapter object and setting it to recyclerview
+                            ProductsAdapter adapter = new ProductsAdapter(MainActivity.this, productList);
+                            recyclerView.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                });
+
+        //adding our stringrequest to queue
+        Volley.newRequestQueue(this).add(stringRequest);
     }
 }
