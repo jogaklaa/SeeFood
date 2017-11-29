@@ -22,8 +22,7 @@ public class ProductListActivity extends AppCompatActivity {
 
     //this is the JSON Data URL
     //make sure you are using the correct ip else it will not work
-    private static final String URL_PRODUCTS = "http://34.234.229.114:8000/fetch/30";
-
+    private static final String URL_PRODUCTS = "http://34.234.229.114:8000/fetch/30.php";
     //a list to store all the products
     List<Product> productList;
 
