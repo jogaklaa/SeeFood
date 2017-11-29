@@ -8,6 +8,7 @@ from django.db import models
 class image(models.Model):
     positiveCertainty = models.DecimalField(decimal_places=15,max_digits=20, null = True)
     negativeCertainty = models.DecimalField(decimal_places=15,max_digits=20, null = True)
+    certainty = models.DecimalField(decimal_places=15,max_digits=20, null = True)
     photo = models.ImageField(upload_to='./', null = True)
 
     def fileLink(self):
