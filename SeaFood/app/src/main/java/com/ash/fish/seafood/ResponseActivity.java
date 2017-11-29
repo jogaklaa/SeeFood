@@ -86,9 +86,9 @@ public class ResponseActivity extends AppCompatActivity {
         bitmap = getBitmap(imageurl);
         imageView.setImageBitmap(bitmap);
 
-        while(true){
-
-        }
+//        while(true){
+//
+//        }
     }
 
     public Bitmap getBitmap(String url) {
@@ -106,15 +106,22 @@ public class ResponseActivity extends AppCompatActivity {
     }
 
     public void SetImage(String url, ImageView i){
+        Bitmap bitmap = null;
         try {
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
+            URL urlSource = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlSource.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            bitmap = BitmapFactory.decodeStream(input);
+           // bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
             ImageView imageView;
             i.setImageBitmap(bitmap);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
 
 
