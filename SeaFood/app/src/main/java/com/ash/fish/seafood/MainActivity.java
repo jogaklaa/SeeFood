@@ -67,10 +67,19 @@ public class MainActivity extends AppCompatActivity {
         //to display it in recyclerview
         loadProducts();
 
+
         findViewById(R.id.buttonGallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, ProductListActivity.class);
+                startActivity(i);
+            }
+        });
+
+        findViewById(R.id.buttonTutorial).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, TutorialActivity.class);
                 startActivity(i);
             }
         });

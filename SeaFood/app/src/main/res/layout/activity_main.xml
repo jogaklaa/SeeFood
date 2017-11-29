@@ -23,6 +23,13 @@
             android:text="Upload Image" />
 
         <Button
+            android:id="@+id/cameraUploadImage"
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:layout_gravity="center"
+            android:text="Take Image" />
+
+        <Button
             android:id="@+id/buttonGallery"
             android:layout_width="wrap_content"
             android:layout_height="125dp"
@@ -30,11 +37,11 @@
             android:text="View Gallery" />
 
         <Button
-            android:id="@+id/cameraUploadImage"
+            android:id="@+id/buttonTutorial"
             android:layout_width="wrap_content"
             android:layout_height="125dp"
             android:layout_gravity="center"
-            android:text="Take Image" />
+            android:text="Need help?" />
 
         <ImageView
             android:id="@+id/imageView"
