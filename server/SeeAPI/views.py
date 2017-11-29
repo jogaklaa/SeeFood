@@ -46,9 +46,10 @@ def photoCheck(request):
         filename = request.FILES[newImage].name
         newImageObject.positiveCertainty = scores[0][0]
         newImageObject.negativeCertainty = scores[0][1]
+        newImageObject.certainty = max(min(((scores[0][0]-scores[0][1])/4),1),-1)
         newImageObject.save()
         print({"photo":newImageObject.photo, "positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty})
-        values[filename] = {"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty}
+        values[filename] = {"positive":newImageObject.positiveCertainty, "negative":newImageObject.negativeCertainty, "certainty":newImageObject.certainty}
     return JsonResponse(values)
 
 @csrf_exempt
@@ -62,6 +63,7 @@ def photoQeury(request, pk = 30):
         dictionary ={"photo":"http://34.234.229.114:8000/media/"+photo.photo.name}
         dictionary['positive'] =photo.positiveCertainty
         dictionary['negative'] =photo.negativeCertainty
+        dictionary['certainty'] = photo.certainty
         data[i] = dictionary
     return JsonResponse(data)
 
