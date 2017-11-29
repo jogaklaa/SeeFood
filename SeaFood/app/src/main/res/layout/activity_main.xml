@@ -37,6 +37,13 @@
             android:layout_gravity="center"
             android:text="View Gallery" />
 
+        <Button
+            android:id="@+id/buttonTutorial"
+            android:layout_width="wrap_content"
+            android:layout_height="125dp"
+            android:layout_gravity="center"
+            android:text="Need help?" />
+
         <ImageView
             android:id="@+id/imageView"
             android:layout_width="wrap_content"
