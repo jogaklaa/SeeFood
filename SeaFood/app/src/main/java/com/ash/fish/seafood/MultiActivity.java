@@ -53,6 +53,7 @@ public class MultiActivity extends AppCompatActivity{
                     i--;
                 }
                 Intent i = new Intent(MultiActivity.this, ResponseActivity.class);
+                startActivity(i);
             }
         });
     }
