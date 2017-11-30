@@ -52,6 +52,7 @@ public class MultiActivity extends AppCompatActivity{
                     uploadBitmap(imgs.remove(i));
                     i--;
                 }
+                Intent i = new Intent(MultiActivity.this, ResponseActivity.class);
             }
         });
     }

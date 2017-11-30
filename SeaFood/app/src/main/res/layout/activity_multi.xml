@@ -13,10 +13,10 @@
 
     <Button
         android:id="@+id/buttonGallery"
-        android:layout_width="400dp"
+        android:layout_width="200dp"
         android:layout_height="107dp"
         android:layout_gravity="center"
-        android:background="@drawable/octopustransparent"
+        android:background="@drawable/addimagebutton"
         android:text="" />
 
     <Button
@@ -24,7 +24,7 @@
         android:layout_width="200dp"
         android:layout_height="107dp"
         android:layout_gravity="center"
-        android:background="@drawable/hamburgerright"
+        android:background="@drawable/donebutton"
         android:text="" />
 
     <TextView
@@ -32,6 +32,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
+        android:layout_gravity="center"
         android:text="Go to the gallery after you hit 'Done'!"
         android:textSize="20sp" />
 

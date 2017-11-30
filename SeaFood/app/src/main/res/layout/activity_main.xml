@@ -34,10 +34,10 @@
 
         <Button
             android:id="@+id/buttonUploadMulti"
-            android:layout_width="400dp"
+            android:layout_width="200dp"
             android:layout_height="107dp"
             android:layout_gravity="center"
-            android:background="@drawable/octopustransparent"
+            android:background="@drawable/uploadmultipleimages"
             android:text="" />
 
         <Button
