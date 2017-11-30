@@ -33,7 +33,7 @@ import java.net.URL;
 import static java.lang.Math.abs;
 
 public class ResponseActivity extends AppCompatActivity {
-    final String url = "http://34.234.229.114:8000/fetch/30";
+    final String url = "http://34.234.229.114:8000/fetch/50";
     String certainty;
     double dcert;
     String imageurl;
@@ -130,7 +130,7 @@ public class ResponseActivity extends AppCompatActivity {
                                     Log.d("image", imageurl);
                                     bitmap = getBitmap(imageurl);
                                     imageView.setImageBitmap(bitmap);
-                                    certain.setText(certainty);
+                                    certain.setText("           ");
                                     if (dcert > 0){
                                         foody.setText("SeaFood is " + certainty +"% sure this image contains food.");
                                     } else {
@@ -181,7 +181,7 @@ public class ResponseActivity extends AppCompatActivity {
                                         Log.d("image", imageurl);
                                         bitmap = getBitmap(imageurl);
                                         imageView.setImageBitmap(bitmap);
-                                        certain.setText(certainty);
+                                        certain.setText("            ");
                                         if (dcert > 0){
                                             foody.setText("SeaFood is " + certainty +"% sure this image contains food.");
                                         } else {
