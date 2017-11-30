@@ -13,6 +13,7 @@
         android:layout_marginBottom="26dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:background="@drawable/titleresults"
         android:id="@+id/titletop"/>
 
 
@@ -22,7 +23,6 @@
         android:layout_gravity="center"
         android:layout_height="100dp"
         android:layout_marginTop="50dp"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/titletop"
         />
@@ -35,12 +35,15 @@
         android:text="Loading..."
         android:layout_centerHorizontal="true"
         />
+
     <TextView
         android:id ="@+id/isitfood"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/certainty"
         android:layout_centerHorizontal="true"
+        android:fontFamily="sans-serif-medium"
+        android:textSize="20sp"
         />
 
     
