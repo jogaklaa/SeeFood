@@ -33,7 +33,7 @@ import java.net.URL;
 import static java.lang.Math.abs;
 
 public class ResponseActivity extends AppCompatActivity {
-    final String url = "http://34.234.229.114:8000/fetch/10";
+    final String url = "http://34.234.229.114:8000/fetch/50";
     String certainty;
     double dcert;
     String imageurl;
