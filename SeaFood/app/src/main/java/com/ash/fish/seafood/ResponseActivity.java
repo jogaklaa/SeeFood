@@ -30,14 +30,18 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static java.lang.Math.abs;
+
 public class ResponseActivity extends AppCompatActivity {
     final String url = "http://34.234.229.114:8000/fetch/30";
     String certainty;
+    double dcert;
     String imageurl;
     ImageView imageView;
     Bitmap bitmap;
     String JSONresponse1;
     TextView certain;
+    TextView foody;
     Button previous;
     Button next;
     int count = 0;
@@ -54,6 +58,7 @@ public class ResponseActivity extends AppCompatActivity {
         final RequestQueue queue = Volley.newRequestQueue(this);
         imageView = findViewById(R.id.result);
         certain = findViewById(R.id.certainty);
+        foody = findViewById(R.id.isitfood);
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
             new Response.Listener<JSONObject>()
@@ -67,13 +72,20 @@ public class ResponseActivity extends AppCompatActivity {
                         JSONObject index = response.getJSONObject("0");
                         imageurl = index.getString("photo");
                         certainty = index.getString("certainty");
+                        dcert = Double.parseDouble(certainty);
+                        dcert = Math.round(dcert*100);
+                        certainty = Double.toString(dcert);
                         Log.d("image", imageurl);
                         bitmap = getBitmap(imageurl);
                         imageView.setImageBitmap(bitmap);
-                        certain.setText(certainty);
-                        //uploaded = LoadImageFromWebOperations(imageurl);
-                        //SetImage(imageurl, imageView);
-                        //imageView.setImageDrawable(uploaded);
+                        certain.setText("                    ");
+                        if (dcert > 0){
+                            foody.setText("SeaFood is " + certainty + "% sure this image contains food.");
+                        } else {
+                            dcert = abs(dcert);
+                            certainty = Double.toString(dcert);
+                            foody.setText("SeaFood is " + certainty + "% sure this image does not contain food.");
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -88,7 +100,6 @@ public class ResponseActivity extends AppCompatActivity {
             }
         );
 
-        //Log.v("image", JSONresponse1);
         queue.add(getRequest);
         bitmap = getBitmap(imageurl);
         imageView.setImageBitmap(bitmap);
@@ -106,7 +117,6 @@ public class ResponseActivity extends AppCompatActivity {
                         {
                             @Override
                             public void onResponse(JSONObject response) {
-                                //Log.d("Response", response.toString());
                                 JSONresponse1 = response.toString();
                                 Log.d("image", JSONresponse1);
                                 try {
@@ -114,13 +124,20 @@ public class ResponseActivity extends AppCompatActivity {
                                     JSONObject index = response.getJSONObject(sindex);
                                     imageurl = index.getString("photo");
                                     certainty = index.getString("certainty");
+                                    dcert = Double.parseDouble(certainty);
+                                    dcert = Math.round(dcert*100);
+                                    certainty = Double.toString(dcert);
                                     Log.d("image", imageurl);
                                     bitmap = getBitmap(imageurl);
                                     imageView.setImageBitmap(bitmap);
                                     certain.setText(certainty);
-                                    //uploaded = LoadImageFromWebOperations(imageurl);
-                                    //SetImage(imageurl, imageView);
-                                    //imageView.setImageDrawable(uploaded);
+                                    if (dcert > 0){
+                                        foody.setText("SeaFood is " + certainty +"% sure this image contains food.");
+                                    } else {
+                                        dcert = abs(dcert);
+                                        certainty = Double.toString(dcert);
+                                        foody.setText("SeaFood is " + certainty +"% sure this image does not contain food.");
+                                    }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -158,13 +175,20 @@ public class ResponseActivity extends AppCompatActivity {
                                         JSONObject index = response.getJSONObject(sindex);
                                         imageurl = index.getString("photo");
                                         certainty = index.getString("certainty");
+                                        dcert = Double.parseDouble(certainty);
+                                        dcert = Math.round(dcert*100);
+                                        certainty = Double.toString(dcert);
                                         Log.d("image", imageurl);
                                         bitmap = getBitmap(imageurl);
                                         imageView.setImageBitmap(bitmap);
                                         certain.setText(certainty);
-                                        //uploaded = LoadImageFromWebOperations(imageurl);
-                                        //SetImage(imageurl, imageView);
-                                        //imageView.setImageDrawable(uploaded);
+                                        if (dcert > 0){
+                                            foody.setText("SeaFood is " + certainty +"% sure this image contains food.");
+                                        } else {
+                                            dcert = abs(dcert);
+                                            certainty = Double.toString(dcert);
+                                            foody.setText("SeaFood is " + certainty +"% sure this image does not contain food.");
+                                        }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
