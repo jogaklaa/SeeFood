@@ -1,6 +1,12 @@
 
 {% load static %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
   /*#image {
     float: right;
@@ -10,6 +16,11 @@
   }
   img, a, input{
     padding: 10px;
+  }
+  input[type=file]{
+    /*padding-left: 10px;*/
+    margin: auto;
+    margin: -bottom: 10px;
   }
   #well{
     width: 400px;
@@ -43,14 +54,16 @@ function submitPhoto(){
 <img src="{% static "Capture.PNG" %}" width="225px" height="300px"alt="My image"/>
 </div>
 
-  <a href='/admin'><button>Login Here</button></a>
+  <a href='/gallery'><button class="btn">Gallery</button></a>
   <br />
   <div id="well">
     <form method="post" enctype="multipart/form-data">
    <!-- {% csrf_token %} -->
    {% csrf_token %}
-   <input type="file" name="myfile" id="file">
-   <button type="submit">Upload</button>
+   <!-- <div class="row"> -->
+     <input type="file" name="myfile" id="file" class="offset-lg-7">
+   <!-- </div> -->
+   <button type="submit" class="btn">Upload</button>
  </form>
 </div>
  </body>
