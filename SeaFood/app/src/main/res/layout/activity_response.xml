@@ -13,8 +13,8 @@
         android:layout_marginBottom="26dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:id="@+id/titletop"
-        android:background="@draw"/>
+        android:background="@drawable/titleresults"
+        android:id="@+id/titletop"/>
 
 
     <ImageView
