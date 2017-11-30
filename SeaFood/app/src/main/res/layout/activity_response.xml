@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/bg"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
@@ -14,12 +15,13 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         />
+
     <TextView
         android:id ="@+id/certainty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/result"
-        android:text="Hello"
+        android:text="Loading..."
         android:layout_centerHorizontal="true"
         />
     <TextView
@@ -40,17 +42,19 @@
         android:gravity="center_horizontal"
         android:layout_alignParentBottom="true"
         >
+
         <Button
             android:id="@+id/previous"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            />
+            android:background="@drawable/previous" />
+
         <Button
             android:id="@+id/next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            />
+            android:background="@drawable/next" />
     </LinearLayout>
 </RelativeLayout>
