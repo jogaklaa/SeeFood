@@ -33,7 +33,7 @@ import java.net.URL;
 import static java.lang.Math.abs;
 
 public class ResponseActivity extends AppCompatActivity {
-    final String url = "http://34.234.229.114:8000/fetch/50";
+    final String url = "http://34.234.229.114:8000/fetch/10";
     String certainty;
     double dcert;
     String imageurl;
@@ -68,27 +68,27 @@ public class ResponseActivity extends AppCompatActivity {
                     //Log.d("Response", response.toString());
                     JSONresponse1 = response.toString();
                     Log.d("image", JSONresponse1);
-                    try {
-                        JSONObject index = response.getJSONObject("0");
-                        imageurl = index.getString("photo");
-                        certainty = index.getString("certainty");
-                        dcert = Double.parseDouble(certainty);
-                        dcert = Math.round(dcert*100);
-                        certainty = Double.toString(dcert);
-                        Log.d("image", imageurl);
-                        bitmap = getBitmap(imageurl);
-                        imageView.setImageBitmap(bitmap);
-                        certain.setText("                    ");
-                        if (dcert > 0){
-                            foody.setText("SeaFood is " + certainty + "% sure this image contains food.");
-                        } else {
-                            dcert = abs(dcert);
+                        try {
+                            JSONObject index = response.getJSONObject("0");
+                            imageurl = index.getString("photo");
+                            certainty = index.getString("certainty");
+                            dcert = Double.parseDouble(certainty);
+                            dcert = Math.round(dcert * 100);
                             certainty = Double.toString(dcert);
-                            foody.setText("SeaFood is " + certainty + "% sure this image does not contain food.");
+                            Log.d("image", imageurl);
+                            bitmap = getBitmap(imageurl);
+                            imageView.setImageBitmap(bitmap);
+                            certain.setText("                    ");
+                            if (dcert > 0) {
+                                foody.setText("SeaFood is " + certainty + "% sure this image contains food.");
+                            } else {
+                                dcert = abs(dcert);
+                                certainty = Double.toString(dcert);
+                                foody.setText("SeaFood is " + certainty + "% sure this image does not contain food.");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
                 }
             },
                 new Response.ErrorListener()
@@ -111,7 +111,6 @@ public class ResponseActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 count+=1;
-                Log.v("Money", "hoes");
                 JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                         new Response.Listener<JSONObject>()
                         {
@@ -128,6 +127,7 @@ public class ResponseActivity extends AppCompatActivity {
                                     dcert = Math.round(dcert*100);
                                     certainty = Double.toString(dcert);
                                     Log.d("image", imageurl);
+                                    certainty = Double.toString(dcert);
                                     bitmap = getBitmap(imageurl);
                                     imageView.setImageBitmap(bitmap);
                                     certain.setText("           ");
@@ -161,7 +161,6 @@ public class ResponseActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(count >= 1) {
                     count -= 1;
-                    Log.v("Money", "and hoes");
                     JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                             new Response.Listener<JSONObject>()
                             {
