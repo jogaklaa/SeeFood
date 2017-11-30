@@ -58,6 +58,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.buttonUploadMulti).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, MultiActivity.class);
+                startActivity(i);
+            }
+        });
+
         //adding click listener to button
         findViewById(R.id.buttonUploadImage).setOnClickListener(new View.OnClickListener() {
             @Override
