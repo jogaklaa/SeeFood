@@ -10,6 +10,7 @@ from django.core.files.storage import FileSystemStorage
 from django.views.decorators.csrf import csrf_exempt
 import numpy as np
 import base64
+import json
 import tensorflow as tf
 
 
@@ -27,7 +28,7 @@ print("AI has been loaded, party hard!")
 def homepageView(request):
     if request.method == 'POST' and request.FILES['myfile']:
         # for newImage in request.FILES:
-        #     newImageObject = image.objects.create(photo = request.FILES[newImage], positiveCertainty = 1.5, negativeCertainty = .3)
+        #     newImageObject = image.objects.create(photo = request.FILES[newImage], positiveCertainty = 1.5, negativeCertainty = .3, certainty=.6)
         #     newImageObject.save()
         # return JsonResponse({"item":"it worked!"})
         return photoCheck(request)
@@ -70,3 +71,9 @@ def photoQeury(request, pk = 30):
 def photoview(request, pk = None):
     # image_data = open(image.objects.get(pk=pk).photo, "rb").read()
     return HttpResponse(image.objects.get(pk=pk).photo, content_type="image/png")
+
+def galleryView(request):
+    data = []
+    for photo in image.objects.all().order_by('-pk')[:20]:
+        data.append({"photo": photo.photo, "certainty":int(abs(photo.certainty)*100), "pos":(photo.certainty>0)})
+    return render(request, 'gallery.html', {"photos": data})

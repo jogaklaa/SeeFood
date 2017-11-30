@@ -1,0 +1,57 @@
+{% load static %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+  h1{
+    text-align: center;
+    padding-bottom: 20px;
+  }
+  figure{
+    margin: 15px;
+    max-width: 300px;
+  }
+  figcaption{
+    font-size: 20px;
+    text-align: center;
+    width: 300px;
+  }
+  img{
+  width:auto;
+	max-width:100%;
+  min-width: 300px;
+	height:auto;
+  }
+
+  .container{
+  	display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -moz-flex;
+    display: -webkit-flex;
+    display: flex;
+  	flex-wrap: wrap;
+  }
+</style>
+<body>
+  <h1>Gallery</h1>
+<div class="container">
+  {% for info in photos %}
+  <figure>
+      <img src="http://34.234.229.114:8000/media/{{info.photo}}" />
+    {% if info.pos > 0  %}
+    <figcaption style = "background-color: rgba(0, 255, 0, 0.5); ">
+        We are {{info.certainty}}% certain it is food!
+    {% elif info.pos <= 0 %}
+    <figcaption style = "background-color: rgba(255, 0, 0, 0.5); ">
+        We are {{info.certainty}}% certain it is <b>NOT</b> food!
+      {% endif %}
+    </figcaption>
+  </figure>
+    {% endfor %}
+</div>
+</body>

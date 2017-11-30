@@ -8,8 +8,11 @@ import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,14 +30,22 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static java.lang.Math.abs;
+
 public class ResponseActivity extends AppCompatActivity {
-    final String url = "http://34.234.229.114:8000/fetch/1";
+    final String url = "http://34.234.229.114:8000/fetch/50";
     String certainty;
+    double dcert;
     String imageurl;
     ImageView imageView;
     Bitmap bitmap;
     String JSONresponse1;
     TextView certain;
+    TextView foody;
+    Button previous;
+    Button next;
+    int count = 0;
+    JSONObject dictionary;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +55,10 @@ public class ResponseActivity extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        RequestQueue queue = Volley.newRequestQueue(this);
+        final RequestQueue queue = Volley.newRequestQueue(this);
         imageView = findViewById(R.id.result);
         certain = findViewById(R.id.certainty);
+        foody = findViewById(R.id.isitfood);
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
             new Response.Listener<JSONObject>()
@@ -56,20 +68,27 @@ public class ResponseActivity extends AppCompatActivity {
                     //Log.d("Response", response.toString());
                     JSONresponse1 = response.toString();
                     Log.d("image", JSONresponse1);
-                    try {
-                        JSONObject index = response.getJSONObject("0");
-                        imageurl = index.getString("photo");
-                        certainty = index.getString("certainty");
-                        Log.d("image", imageurl);
-                        bitmap = getBitmap(imageurl);
-                        imageView.setImageBitmap(bitmap);
-                        certain.setText(certainty);
-                        //uploaded = LoadImageFromWebOperations(imageurl);
-                        //SetImage(imageurl, imageView);
-                        //imageView.setImageDrawable(uploaded);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                        try {
+                            JSONObject index = response.getJSONObject("0");
+                            imageurl = index.getString("photo");
+                            certainty = index.getString("certainty");
+                            dcert = Double.parseDouble(certainty);
+                            dcert = Math.round(dcert * 100);
+                            certainty = Double.toString(dcert);
+                            Log.d("image", imageurl);
+                            bitmap = getBitmap(imageurl);
+                            imageView.setImageBitmap(bitmap);
+                            certain.setText("                    ");
+                            if (dcert > 0) {
+                                foody.setText("SeaFood is " + certainty + "% sure this image contains food.");
+                            } else {
+                                dcert = abs(dcert);
+                                certainty = Double.toString(dcert);
+                                foody.setText("SeaFood is " + certainty + "% sure this image does not contain food.");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                 }
             },
                 new Response.ErrorListener()
@@ -81,14 +100,114 @@ public class ResponseActivity extends AppCompatActivity {
             }
         );
 
-        //Log.v("image", JSONresponse1);
         queue.add(getRequest);
         bitmap = getBitmap(imageurl);
         imageView.setImageBitmap(bitmap);
 
-        while(true){
+        next = findViewById(R.id.next);
+        previous = findViewById(R.id.previous);
 
-        }
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                count+=1;
+                JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                        new Response.Listener<JSONObject>()
+                        {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                JSONresponse1 = response.toString();
+                                Log.d("image", JSONresponse1);
+                                try {
+                                    String sindex = Integer.toString(count);
+                                    JSONObject index = response.getJSONObject(sindex);
+                                    imageurl = index.getString("photo");
+                                    certainty = index.getString("certainty");
+                                    dcert = Double.parseDouble(certainty);
+                                    dcert = Math.round(dcert*100);
+                                    certainty = Double.toString(dcert);
+                                    Log.d("image", imageurl);
+                                    certainty = Double.toString(dcert);
+                                    bitmap = getBitmap(imageurl);
+                                    imageView.setImageBitmap(bitmap);
+                                    certain.setText("           ");
+                                    if (dcert > 0){
+                                        foody.setText("SeaFood is " + certainty +"% sure this image contains food.");
+                                    } else {
+                                        dcert = abs(dcert);
+                                        certainty = Double.toString(dcert);
+                                        foody.setText("SeaFood is " + certainty +"% sure this image does not contain food.");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener()
+                        {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d("Error.Response", "no");
+                            }
+                        }
+                );
+
+                queue.add(getRequest);
+            }
+        });
+
+        previous.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(count >= 1) {
+                    count -= 1;
+                    JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                            new Response.Listener<JSONObject>()
+                            {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    //Log.d("Response", response.toString());
+                                    JSONresponse1 = response.toString();
+                                    Log.d("image", JSONresponse1);
+                                    try {
+                                        String sindex = Integer.toString(count);
+                                        JSONObject index = response.getJSONObject(sindex);
+                                        imageurl = index.getString("photo");
+                                        certainty = index.getString("certainty");
+                                        dcert = Double.parseDouble(certainty);
+                                        dcert = Math.round(dcert*100);
+                                        certainty = Double.toString(dcert);
+                                        Log.d("image", imageurl);
+                                        bitmap = getBitmap(imageurl);
+                                        imageView.setImageBitmap(bitmap);
+                                        certain.setText("            ");
+                                        if (dcert > 0){
+                                            foody.setText("SeaFood is " + certainty +"% sure this image contains food.");
+                                        } else {
+                                            dcert = abs(dcert);
+                                            certainty = Double.toString(dcert);
+                                            foody.setText("SeaFood is " + certainty +"% sure this image does not contain food.");
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            },
+                            new Response.ErrorListener()
+                            {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d("Error.Response", "no");
+                                }
+                            }
+                    );
+
+                    queue.add(getRequest);
+                } else {
+                    Toast.makeText(getApplicationContext(), "This is the most recent image",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     public Bitmap getBitmap(String url) {
@@ -106,15 +225,22 @@ public class ResponseActivity extends AppCompatActivity {
     }
 
     public void SetImage(String url, ImageView i){
+        Bitmap bitmap = null;
         try {
-            Bitmap bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
+            URL urlSource = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlSource.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            bitmap = BitmapFactory.decodeStream(input);
+           // bitmap = BitmapFactory.decodeStream((InputStream)new URL(url).getContent());
             ImageView imageView;
             i.setImageBitmap(bitmap);
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        } catch (Exception e) {}
     }
 
 

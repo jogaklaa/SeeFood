@@ -28,4 +28,5 @@ urlpatterns = [
     url(r'^fetch/$', photoQeury, name="fetch10"),
     url(r'^upload', photoCheck,name="upload"),
     url(r'^media/(?P<path>.*)$', serve,{'document_root': settings.MEDIA_ROOT}),
+    url(r'gallery/$', galleryView),
 ]

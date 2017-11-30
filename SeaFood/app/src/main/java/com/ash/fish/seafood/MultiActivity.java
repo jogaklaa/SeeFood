@@ -6,8 +6,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -22,68 +22,38 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity {
-    static final int REQUEST_IMAGE_CAPTURE =200;
+public class MultiActivity extends AppCompatActivity{
+    static final int ADD_IMAGE = 300;
+    ArrayList<Bitmap> imgs = new ArrayList<Bitmap>();
 
-    //ImageView to display image selected
-    ImageView imageView;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_multi);
 
-    //this is the JSON Data URL
-    //make sure you are using the correct ip else it will not work
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_main);
-
-        //initializing views
-        imageView = (ImageView) findViewById(R.id.imageView);
-
+        // Go to gallery and select image, DO NOT UPLOAD IMAGE
         findViewById(R.id.buttonGallery).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, ResponseActivity.class);
-                startActivity(i);
-            }
-        });
-
-        findViewById(R.id.buttonTutorial).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, TutorialActivity.class);
-                startActivity(i);
-            }
-        });
-
-        findViewById(R.id.buttonUploadMulti).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, MultiActivity.class);
-                startActivity(i);
-            }
-        });
-
-        //adding click listener to button
-        findViewById(R.id.buttonUploadImage).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(i, 100);
+                startActivityForResult(i, ADD_IMAGE);
             }
         });
 
-        findViewById(R.id.cameraUploadImage).setOnClickListener(new View.OnClickListener() {
+        // Upload selected gallery images to server
+        findViewById(R.id.buttonDone).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                //if everything is okay will open image capture
-                Intent takePhotoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if(takePhotoIntent.resolveActivity(getPackageManager())!=null){
-                    startActivityForResult(takePhotoIntent, REQUEST_IMAGE_CAPTURE);
+                for (int i = 0; i < imgs.size(); i++) {
+                    uploadBitmap(imgs.remove(i));
+                    i--;
                 }
+                Intent i = new Intent(MultiActivity.this, ResponseActivity.class);
+                startActivity(i);
             }
         });
     }
@@ -91,44 +61,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 100 && resultCode == RESULT_OK && data != null) {
 
+        //add image to ArrayList, does not upload
+        if (requestCode == ADD_IMAGE && resultCode == RESULT_OK && data != null) {
             //getting the image Uri
             Uri imageUri = data.getData();
             try {
                 //getting bitmap object from uri
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imageUri);
-
-                //displaying selected image to imageview
-                imageView.setImageBitmap(bitmap);
-
-                //calling the method uploadBitmap to upload image
-                uploadBitmap(bitmap);
+                //add bitmap to bitmaps to upload
+                imgs.add(imgs.size(),bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        if (requestCode == 200 && resultCode == RESULT_OK && data != null) {
-            Bundle extras = data.getExtras();
-            Bitmap bitmap = (Bitmap) extras.get("data");
-            imageView.setImageBitmap(bitmap);
-            uploadBitmap(bitmap);
-        }
-    }
-
-    /*
-    * The method is taking Bitmap as an argument
-    * then it will return the byte[] array for the given bitmap
-    * and we will send this array to the server
-    * here we are using PNG Compression with 80% quality
-    * you can give quality between 0 to 100
-    * 0 means worse quality
-    * 100 means best quality
-    * */
-    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
     }
 
     private void uploadBitmap(final Bitmap bitmap) {
@@ -140,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                     public void onResponse(NetworkResponse response) {
                         try {
                             JSONObject obj = new JSONObject(new String(response.data));
-                            Toast.makeText(getApplicationContext(), obj.toString(), Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(), obj.toString(), Toast.LENGTH_LONG).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -173,5 +119,11 @@ public class MainActivity extends AppCompatActivity {
 
         //adding the request to volley
         Volley.newRequestQueue(this).add(volleyMultipartRequest);
+    }
+
+    public byte[] getFileDataFromDrawable(Bitmap bitmap) {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 80, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
 }
